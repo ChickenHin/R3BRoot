@@ -13,10 +13,10 @@ name: CI-CD-Main
 # Controls when the action will run. 
 on:
   # Triggers the workflow in case of a push or pull request events
-  push:
-    branches: [ dev ]
-  pull_request:
-    branches: [ dev ]
+  # push:
+  #   branches: [ dev ]
+  # pull_request:
+  #   branches: [ dev ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -33,13 +33,13 @@ jobs:
         with:
           fetch-depth: 0
           submodules: 'true'
-      - name: clean-cache
-        if: github.event_name == 'push'
-        uses: './.github/actions/cache-clean'
-        with:
-          path: ~/.ccache
-          key: ccache-${{ matrix.cache }}-${{ matrix.sys }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: clean-cache
+      #   if: github.event_name == 'push'
+      #   uses: './.github/actions/cache-clean'
+      #   with:
+      #     path: ~/.ccache
+      #     key: ccache-${{ matrix.cache }}-${{ matrix.sys }}
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # The job to run the main CI pipelines
   build-test:
@@ -172,14 +172,14 @@ jobs:
       # A composite action to save the ccaahe created from the merge events.
       # Cache names (key) should be consistent with the names used in the
       # cache restoring step.
-      - name: Save-cache
-        if: github.event_name == 'push' && matrix.skip-save != true
-        uses: actions/cache@v5
-        with:
-          path: ~/.ccache
-          key: ccache-${{ matrix.cache }}-${{ matrix.sys }}
+      # - name: Save-cache
+      #   if: github.event_name == 'push' && matrix.skip-save != true
+      #   uses: actions/cache@v5
+      #   with:
+      #     path: ~/.ccache
+      #     key: ccache-${{ matrix.cache }}-${{ matrix.sys }}
 
-      # Show the cache stats
-      - name: Show-ccache-stats
-        if: github.event_name == 'pull_request' && always()
-        run: ccache --show-stats
+      # # Show the cache stats
+      # - name: Show-ccache-stats
+      #   if: github.event_name == 'pull_request' && always()
+      #   run: ccache --show-stats
